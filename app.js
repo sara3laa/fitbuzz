@@ -2,6 +2,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const productRoutes = require('./api/routes/products');
+const articleRoutes = require('./api/routes/articles');
 // Set up default mongoose connection
 const mongoDB = 'mongodb://127.0.0.1/fitbuzz';
 mongoose.connect(mongoDB, { useNewUrlParser: true });
@@ -16,4 +17,5 @@ db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 const app = express();
 app.use(bodyParser.json());
 app.use('/products', productRoutes);
+app.use('/articles', articleRoutes);
 module.exports = app;

@@ -14,12 +14,12 @@
   "author": "Sara Alaa",
   "license": "ISC",
   "dependencies": {
-    "bcryptjs": "^2.4.3",
     "body-parser": "^1.18.3",
     "boom": "^7.3.0",
     "crypto-js": "^3.1.9-1",
     "express": "^4.16.4",
     "joi": "^14.3.1",
+    "jsonwebtoken": "^8.5.1",
     "lodash": "^4.17.11",
     "mongoose": "^5.4.19",
     "route-async": "^1.0.2"
