@@ -14,6 +14,7 @@
   "author": "Sara Alaa",
   "license": "ISC",
   "dependencies": {
+    "bcrypt": "^3.0.5",
     "body-parser": "^1.18.3",
     "boom": "^7.3.0",
     "crypto-js": "^3.1.9-1",

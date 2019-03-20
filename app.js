@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const productRoutes = require('./api/routes/products');
 const articleRoutes = require('./api/routes/articles');
+const userRoutes = require('./api/routes/users');
 // Set up default mongoose connection
 const mongoDB = 'mongodb://127.0.0.1/fitbuzz';
 mongoose.connect(mongoDB, { useNewUrlParser: true });
@@ -18,4 +19,5 @@ const app = express();
 app.use(bodyParser.json());
 app.use('/products', productRoutes);
 app.use('/articles', articleRoutes);
+app.use('/users', userRoutes);
 module.exports = app;
