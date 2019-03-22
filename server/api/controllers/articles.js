@@ -7,7 +7,6 @@ const getarticles = async (req, res) => {
   try {
     const docs = await Article.find();
     const response = {
-      count: docs.length,
       articles: docs.map(doc => ({
         tile: doc.name,
         content: doc.price,
