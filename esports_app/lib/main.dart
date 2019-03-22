@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-
+import 'package:carousel_pro/carousel_pro.dart';
 void main(){
   runApp(
     MaterialApp(
@@ -14,9 +14,24 @@ class HomePage extends StatefulWidget{
 class _HomePageState extends State<HomePage>{
   @override
   Widget build(BuildContext context){
+    Widget image_carousel = new Container(
+      height: 150.0,
+      child: new Carousel(
+        boxFit: BoxFit.cover,
+        images: [  new NetworkImage('https://bit.ly/2CwzpES'),
+        new NetworkImage('https://bit.ly/2FriTrr'),
+        new NetworkImage('https://bit.ly/2UQtIIT'),
+        new NetworkImage('https://bit.ly/2UK1EHc')],
+        autoplay: false,
+        animationCurve: Curves.fastOutSlowIn,
+        animationDuration: Duration(microseconds: 1000) ,
+        dotSize: 4.0,
+        indicatorBgPadding: 2.0,
+      ),
+    );
     return Scaffold(
       appBar: new AppBar(
-        backgroundColor: Colors.blueAccent,
+        backgroundColor: Colors.deepOrangeAccent,
         title: Text('Fitbuzz'),
         actions: <Widget>[
           new IconButton(icon: Icon(Icons.search,color: Colors.white) , onPressed: (){}),
@@ -31,11 +46,11 @@ class _HomePageState extends State<HomePage>{
                 accountName: Text('Sara Alaa'),
                 accountEmail: Text('sara@example.com'),
                 currentAccountPicture: GestureDetector(
-                  child: new CircleAvatar(backgroundColor: Colors.lightBlue,
+                  child: new CircleAvatar(backgroundColor: Colors.deepOrangeAccent,
                   child: Icon(Icons.person , color:Colors.white),),
                 ),
                 decoration: new BoxDecoration(
-                  color: Colors.blueAccent
+                  color: Colors.deepOrangeAccent
                 ),
             ),
 
@@ -43,7 +58,7 @@ class _HomePageState extends State<HomePage>{
                 onTap: (){},
                 child: ListTile(
                 title: Text('Home Page'),
-                leading: Icon(Icons.home),
+                leading: Icon(Icons.home , color: Colors.lightBlue),
           )
             ),
 
@@ -51,21 +66,21 @@ class _HomePageState extends State<HomePage>{
                 onTap: (){},
                 child: ListTile(
                   title: Text('My Account'),
-                  leading: Icon(Icons.person),
+                  leading: Icon(Icons.person , color: Colors.lightBlue),
                 )
             ),
             InkWell(
                 onTap: (){},
                 child: ListTile(
                   title: Text('My Orders'),
-                  leading: Icon(Icons.shopping_basket),
+                  leading: Icon(Icons.shopping_basket , color: Colors.lightBlue),
                 )
             ),
             InkWell(
                 onTap: (){},
                 child: ListTile(
                   title: Text('Articles'),
-                  leading: Icon(Icons.receipt),
+                  leading: Icon(Icons.receipt , color: Colors.lightBlue),
                 )
             ),
             Divider(),
@@ -73,18 +88,23 @@ class _HomePageState extends State<HomePage>{
                 onTap: (){},
                 child: ListTile(
                   title: Text('Settings'),
-                  leading: Icon(Icons.settings),
+                  leading: Icon(Icons.settings , color: Colors.lightBlue),
                 )
             ),
             InkWell(
                 onTap: (){},
                 child: ListTile(
                   title: Text('About'),
-                  leading: Icon(Icons.help),
+                  leading: Icon(Icons.help , color: Colors.blueAccent),
                 )
             )
           ],
         ),
+      ),
+      body: new ListView(
+        children: <Widget>[
+          image_carousel
+        ],
       ),
     );
   }
