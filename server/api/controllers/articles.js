@@ -9,13 +9,9 @@ const getarticles = async (req, res) => {
     const response = {
       articles: docs.map(doc => ({
         tile: doc.name,
-        content: doc.price,
+        content: doc.content,
         image: doc.image,
         _id: doc._id,
-        request: {
-          type: 'GET',
-          url: `http://localhost:3000/articles/${doc._id}`,
-        },
       })),
     };
     res.status(200).json(response);
