@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:carousel_pro/carousel_pro.dart';
+import 'package:esports_app/components/articles.dart';
+
 void main(){
   runApp(
     MaterialApp(
@@ -11,7 +13,9 @@ class HomePage extends StatefulWidget{
   @override
   _HomePageState createState() => _HomePageState();
 }
+
 class _HomePageState extends State<HomePage>{
+
   @override
   Widget build(BuildContext context){
     Widget image_carousel = new Container(
@@ -29,6 +33,9 @@ class _HomePageState extends State<HomePage>{
         indicatorBgPadding: 2.0,
       ),
     );
+
+
+
     return Scaffold(
       appBar: new AppBar(
         backgroundColor: Colors.deepOrangeAccent,
@@ -101,10 +108,19 @@ class _HomePageState extends State<HomePage>{
           ],
         ),
       ),
-      body: new ListView(
+      body: new Column(
         children: <Widget>[
-          image_carousel
+          image_carousel,
+          new Padding(padding: const EdgeInsets.all(4.0),
+            child: Container(
+                alignment: Alignment.centerLeft,
+                child: new Text('Articles')),),
+
+          ArticlesListPage(),
+
+
         ],
+
       ),
     );
   }
