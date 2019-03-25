@@ -33,13 +33,14 @@ const addToCard = async (req, res) => {
     $set: { active: true },
   }, { upsert: true });
   res.status(204);
+  res.json('add to cart');
 };
 
 const removeFromCart = async (req, res) => {
   const { product_id: productId, user_id: userId } = req.body;
   if (!productId) throw Boom.badRequest('missing product id');
   if (!userId) throw Boom.badRequest('missing user id');
-  const cart = await Cart.findOne({ user_id: userId });
+  const cart = await Cart.findOne({ user: userId });
   const cartProduct = cart.products.filter((p) => {
     if (p.product_id.toString() === productId) return p;
   });
@@ -51,6 +52,7 @@ const removeFromCart = async (req, res) => {
   await Product.update({ _id: productId }, { $inc: { qty: cartProduct[0].quantity } });
 
   res.status(204);
+  res.json('removed from cart');
 };
 
 const updateQuantity = async (req, res) => {
@@ -58,9 +60,9 @@ const updateQuantity = async (req, res) => {
   if (!productId) throw Boom.badRequest('missing product id');
   if (!userId) throw Boom.badRequest('missing user id');
   if (!quantity) throw Boom.badRequest('missing quantity');
-  const product = await Product.findById(userId);
+  const product = await Product.findById(productId);
   if (!product) throw Boom.badRequest('product not found');
-  const cart = await Cart.findOne({ user_id: userId });
+  const cart = await Cart.findOne({ user: userId });
   if (!cart) throw Boom.badRequest('cart not found');
   const cartProduct = cart.products.filter((p) => {
     if (p.product_id.toString() === productId) return p;
@@ -69,21 +71,31 @@ const updateQuantity = async (req, res) => {
   if (quantityDelta > product.qty) {
     throw Boom.badRequest('number of avaliable products not enough');
   }
+  let oldqty; let
+    proqty;
+
   // eslint-disable-next-line no-plusplus
   for (let i = 0; i < cart.products.length; i++) {
-    if (cart.products[0].product_id.toString() === productId) {
-      cart.products[0].quantity = quantity;
+    if (cart.products[i].product_id.toString() === productId) {
+      oldqty = cart.products[i].quantity;
+      cart.products[i].quantity = quantity;
       break;
     }
   }
+  if (oldqty > quantity) {
+    proqty = product.qty + (oldqty - quantity);
+  } else {
+    proqty = product.qty - (quantity - oldqty);
+  }
   await cart.save();
-  await Product.update({ _id: productId }, { $inc: { quantity: -1 * quantity } });
+  await product.update({ qty: proqty });
   res.status(204);
+  res.json('updatedQuantiy');
 };
 
 const checkout = async (req, res) => {
   const { user_id: userId, address } = req.body;
-  const cart = await Cart.findOne({ user_id: userId });
+  const cart = await Cart.findOne({ user: userId });
   await Order.create({ user: userId, products: cart.products, address });
   cart.products = [];
   cart.active = false;
