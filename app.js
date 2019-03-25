@@ -6,7 +6,7 @@ const articleRoutes = require('./api/routes/articles');
 const userRoutes = require('./api/routes/users');
 const cartRoutes = require('./api/routes/carts');
 // Set up default mongoose connection
-const mongoDB = `${process.env.MONGODB_URI}/fitubzz` || 'mongodb://127.0.0.1/fitbuzz';
+const mongoDB = process.env.MONGODB_URI || 'mongodb://127.0.0.1/fitbuzz';
 mongoose.connect(mongoDB, { useNewUrlParser: true });
 // Get Mongoose to use the global promise library
 mongoose.Promise = global.Promise;
