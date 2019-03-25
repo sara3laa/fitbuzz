@@ -40,9 +40,6 @@ const userlogin = async (req, res) => {
       userId: user._id,
     },
     'secret',
-    {
-      expiresIn: '2h',
-    },
   );
   await user.update({ token });
   res.header('x-auth', token).send('logged in');
