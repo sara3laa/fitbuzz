@@ -25,6 +25,9 @@
     "mongoose": "^5.4.19",
     "route-async": "^1.0.2"
   },
+  "engines": {
+    "node": "8.15.1"
+  },
   "devDependencies": {
     "eslint": "^5.15.3",
     "eslint-config-airbnb-base": "^13.1.0",
