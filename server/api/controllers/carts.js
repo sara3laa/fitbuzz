@@ -18,15 +18,15 @@ const addToCard = async (req, res) => {
   if (!productId) throw Boom.badRequest('missing product id');
   if (!userId) throw Boom.badRequest('missing user id');
   if (!quantity) throw Boom.badRequest('missing quantity');
-  const product = await Product.findById(userId);
+  const product = await Product.findById(productId);
   if (!product) throw Boom.badRequest('product not found');
-  if (quantity > product.quantity) {
+  if (quantity > product.qty) {
     throw Boom.badRequest('number of avaliable products not enough');
   }
   const addProduct = {
     product_id: product._id, quantity, image: product.image, name: product.name,
   };
-  product.quantity -= quantity;
+  product.qty -= quantity;
   await product.save();
   await Cart.update({ user: userId }, {
     $push: { products: addProduct },
@@ -48,7 +48,7 @@ const removeFromCart = async (req, res) => {
     if (p.product_id.toString() != productId) return p;
   });
   await cart.save();
-  await Product.update({ _id: productId }, { $inc: { quantity: cartProduct[0].quantity } });
+  await Product.update({ _id: productId }, { $inc: { qty: cartProduct[0].quantity } });
 
   res.status(204);
 };
@@ -66,7 +66,7 @@ const updateQuantity = async (req, res) => {
     if (p.product_id.toString() === productId) return p;
   });
   const quantityDelta = quantity - cartProduct[0].quantity;
-  if (quantityDelta > product.quantity) {
+  if (quantityDelta > product.qty) {
     throw Boom.badRequest('number of avaliable products not enough');
   }
   // eslint-disable-next-line no-plusplus
