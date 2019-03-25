@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 /* eslint-disable consistent-return */
 /* eslint-disable array-callback-return */
 /* eslint-disable no-underscore-dangle */
@@ -8,7 +9,7 @@ const { Cart, Product, Order } = require('../models');
 const getCart = async (req, res) => {
   const userId = req.query.user_id;
   if (!userId) throw Boom.badRequest('missing user id');
-  const cart = await Cart.findOne({ user: userId }).lean();
+  const cart = await Cart.findOne({ user_id: userId }).lean();
   if (!cart) throw Boom.notFound('cart not found');
   res.status(200).json(cart);
 };
@@ -24,11 +25,11 @@ const addToCard = async (req, res) => {
     throw Boom.badRequest('number of avaliable products not enough');
   }
   const addProduct = {
-    product_id: product._id, quantity, image: product.image, name: product.name,
+    product_id: product._id, quantity, image: product.image, name: product.name, price: product.price,
   };
   product.qty -= quantity;
   await product.save();
-  await Cart.update({ user: userId }, {
+  await Cart.update({ user_id: userId }, {
     $push: { products: addProduct },
     $set: { active: true },
   }, { upsert: true });
@@ -40,7 +41,7 @@ const removeFromCart = async (req, res) => {
   const { product_id: productId, user_id: userId } = req.body;
   if (!productId) throw Boom.badRequest('missing product id');
   if (!userId) throw Boom.badRequest('missing user id');
-  const cart = await Cart.findOne({ user: userId });
+  const cart = await Cart.findOne({ user_id: userId });
   const cartProduct = cart.products.filter((p) => {
     if (p.product_id.toString() === productId) return p;
   });
@@ -62,7 +63,7 @@ const updateQuantity = async (req, res) => {
   if (!quantity) throw Boom.badRequest('missing quantity');
   const product = await Product.findById(productId);
   if (!product) throw Boom.badRequest('product not found');
-  const cart = await Cart.findOne({ user: userId });
+  const cart = await Cart.findOne({ user_id: userId });
   if (!cart) throw Boom.badRequest('cart not found');
   const cartProduct = cart.products.filter((p) => {
     if (p.product_id.toString() === productId) return p;
@@ -95,12 +96,13 @@ const updateQuantity = async (req, res) => {
 
 const checkout = async (req, res) => {
   const { user_id: userId, address } = req.body;
-  const cart = await Cart.findOne({ user: userId });
-  await Order.create({ user: userId, products: cart.products, address });
+  const cart = await Cart.findOne({ user_id: userId });
+  await Order.create({ user_id: userId, products: cart.products, address });
   cart.products = [];
   cart.active = false;
   await cart.save();
   res.status(204);
+  res.json('checked out');
 };
 
 module.exports = {

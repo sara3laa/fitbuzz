@@ -9,7 +9,6 @@ const getarticles = async (req, res) => {
     const response = {
       articles: docs.map(doc => ({
         tile: doc.name,
-        content: doc.content,
         image: doc.image,
         _id: doc._id,
       })),

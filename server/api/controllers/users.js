@@ -1,4 +1,5 @@
-
+/* eslint-disable no-underscore-dangle */
+/* eslint-disable space-in-parens */
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const boom = require('boom');
@@ -29,15 +30,13 @@ const userSignup = async (req, res) => {
   });
 };
 const userlogin = async (req, res) => {
-  const user = await User.find({ email: req.email });
+  const user = await User.findOne({ email: req.body.email });
   if (!user) throw boom.notFound('email not found you can signup');
   const isPasswordMAtch = await bcrypt.compare(req.body.password, user.password);
   if (!isPasswordMAtch) throw boom.unauthorized('forget psassword ?');
-
   const token = jwt.sign(
     {
       email: user.email,
-      // eslint-disable-next-line no-underscore-dangle
       userId: user._id,
     },
     'secret',
@@ -45,13 +44,18 @@ const userlogin = async (req, res) => {
       expiresIn: '2h',
     },
   );
+  await user.update({ token });
   res.header('x-auth', token).send('logged in');
+  res.header('userId', user._id );
 };
-const userlogout = (req, res) => {
+const userlogout = async (req, res) => {
+  const user = await User.findById(req.header('userId'));
+  res.header('userId', '');
+  await user.update({ token: '' });
   res.header('x-auth', '').send('loggedout');
 };
 module.exports = {
   userSignup: asyncRoute(userSignup),
   userlogin: asyncRoute(userlogin),
-  userlogout,
+  userlogout: asyncRoute(userlogout),
 };
