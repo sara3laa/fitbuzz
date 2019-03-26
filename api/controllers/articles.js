@@ -32,24 +32,17 @@ const createarticle = async (req, res) => {
       message: 'Created article successfully',
       createdarticle: {
         title: article.title,
-        cpntent: article.content,
+        content: article.content,
         image: article.image,
       },
     });
   });
 };
 const getarticle = async (req, res) => {
-  try {
-    const id = req.params.articleId;
-    const article = await Article.findById(id);
-    if (article) {
-      res.status(200).json({
-        article,
-      });
-    }
-  } catch (error) {
-    throw boom.notFound('article not found');
-  }
+  const id = req.params.articleId;
+  const article = await Article.findById(id);
+  if (!article) throw boom.notFound('not found article');
+  res.status(200).json(article);
 };
 
 module.exports = {

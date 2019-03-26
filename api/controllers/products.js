@@ -15,10 +15,6 @@ const getproducts = async (req, res) => {
                                      price: doc.price,
                                      image: doc.image,
                                      _id: doc._id,
-                                     request: {
-                                             type: 'GET',
-                                             url: `http://localhost:3000/products/${doc._id}`,
-                                     },
         })),
     };
     res.status(200).json(response);
@@ -44,10 +40,6 @@ const createproduct = async (req, res) => {
      price: product.price,
      image: product.image,
      qty: product.qty,
-     request: {
-       type: 'POST',
-       url: `http://localhost:3000/products/${product._id}`,
-     },
    },
  });
 });
