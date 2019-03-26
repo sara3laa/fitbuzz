@@ -8,7 +8,7 @@ const getarticles = async (req, res) => {
     const docs = await Article.find();
     const response = {
       articles: docs.map(doc => ({
-        tile: doc.name,
+        tile: doc.title,
         image: doc.image,
         _id: doc._id,
       })),
