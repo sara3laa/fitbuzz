@@ -9,7 +9,6 @@ const getproducts = async (req, res) => {
   try {
     const docs = await Product.find();
     const response = {
-      count: docs.length,
       products: docs.map(doc => ({
                                      name: doc.name,
                                      price: doc.price,
@@ -53,10 +52,6 @@ const getproduct = async (req, res) => {
        if (product) {
          res.status(200).json({
            product,
-           request: {
-            type: 'GET',
-            url: `http://localhost:3000/products/${product._id}`,
-           },
          });
        }
     } catch (error) {
@@ -71,10 +66,6 @@ const editproduct = async (req, res) => {
     if (!product) throw boom.badData('worng data');
     res.status(200).json({
       message: 'Product Updated',
-      request: {
-       type: 'PATCH',
-       url: `http://localhost:3000/products/${product._id}`,
-      },
     });
 };
 module.exports = {
