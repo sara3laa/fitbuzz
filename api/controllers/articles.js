@@ -8,7 +8,7 @@ const getarticles = async (req, res) => {
     const docs = await Article.find();
     const response = {
       articles: docs.map(doc => ({
-        tile: doc.title,
+        title: doc.title,
         image: doc.image,
         _id: doc._id,
       })),
@@ -34,10 +34,6 @@ const createarticle = async (req, res) => {
         title: article.title,
         cpntent: article.content,
         image: article.image,
-        request: {
-          type: 'POST',
-          url: `http://localhost:3000/articles/${article._id}`,
-        },
       },
     });
   });
@@ -49,10 +45,6 @@ const getarticle = async (req, res) => {
     if (article) {
       res.status(200).json({
         article,
-        request: {
-          type: 'GET',
-          url: `http://localhost:3000/products/${article._id}`,
-        },
       });
     }
   } catch (error) {
